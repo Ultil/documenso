@@ -5,7 +5,8 @@ import { HTMLAttributes } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import { CreditCard, Key, User } from 'lucide-react';
+// import { CreditCard, Key, User } from 'lucide-react';
+import { CreditCard, User } from 'lucide-react';
 
 import { useFeatureFlags } from '@documenso/lib/client-only/providers/feature-flag';
 import { cn } from '@documenso/ui/lib/utils';
@@ -35,6 +36,7 @@ export const DesktopNav = ({ className, ...props }: DesktopNavProps) => {
         </Button>
       </Link>
 
+      {/*
       <Link href="/settings/password">
         <Button
           variant="ghost"
@@ -47,7 +49,7 @@ export const DesktopNav = ({ className, ...props }: DesktopNavProps) => {
           Password
         </Button>
       </Link>
-
+      */}
       {isBillingEnabled && (
         <Link href="/settings/billing">
           <Button

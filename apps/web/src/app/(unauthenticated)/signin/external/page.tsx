@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 
+import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
 import { signIn } from 'next-auth/react';
@@ -60,7 +61,9 @@ export default function SignInPage() {
       <>
         <div className="space-y-4 text-center">
           <h1 className={`mt-4 grow-0 font-semibold text-red-400`}>{error}</h1>
-          <Button>Go Back</Button>
+          <Link href="/signin">
+            <Button>Go Back</Button>
+          </Link>
         </div>
       </>
     );

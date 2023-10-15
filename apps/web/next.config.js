@@ -29,6 +29,20 @@ const config = {
       transform: 'lucide-react/dist/esm/icons/{{ kebabCase member }}',
     },
   },
+  async redirects() {
+    return [
+      {
+        source: '/signin',
+        destination: 'https://app.mabelinsights.com/',
+        permanent: false,
+      },
+      {
+        source: '/settings/password',
+        destination: '/settings/profile',
+        permanent: false,
+      },
+    ];
+  },
   async rewrites() {
     return [
       {
