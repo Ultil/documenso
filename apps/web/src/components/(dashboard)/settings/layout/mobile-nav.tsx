@@ -5,7 +5,8 @@ import { HTMLAttributes } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import { CreditCard, Key, User } from 'lucide-react';
+// import { CreditCard, Key, User } from 'lucide-react';
+import { CreditCard, User } from 'lucide-react';
 
 import { useFeatureFlags } from '@documenso/lib/client-only/providers/feature-flag';
 import { cn } from '@documenso/ui/lib/utils';
@@ -38,6 +39,7 @@ export const MobileNav = ({ className, ...props }: MobileNavProps) => {
         </Button>
       </Link>
 
+      {/*
       <Link href="/settings/password">
         <Button
           variant="ghost"
@@ -50,6 +52,7 @@ export const MobileNav = ({ className, ...props }: MobileNavProps) => {
           Password
         </Button>
       </Link>
+      */}
 
       {isBillingEnabled && (
         <Link href="/settings/billing">
