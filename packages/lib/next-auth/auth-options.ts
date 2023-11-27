@@ -1,5 +1,6 @@
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { compare } from 'bcrypt';
+import { DateTime } from 'luxon';
 import { AuthOptions, Session, User } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider, { GoogleProfile } from 'next-auth/providers/google';
@@ -122,6 +123,7 @@ export const NEXT_AUTH_OPTIONS: AuthOptions = {
       clientId: process.env.NEXT_PRIVATE_GOOGLE_CLIENT_ID ?? '',
       clientSecret: process.env.NEXT_PRIVATE_GOOGLE_CLIENT_SECRET ?? '',
       allowDangerousEmailAccountLinking: true,
+
       profile(profile) {
         return {
           id: Number(profile.sub),
@@ -133,27 +135,53 @@ export const NEXT_AUTH_OPTIONS: AuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user }) {
-      if (!token.email) {
-        throw new Error('No email in token');
+      const merged = {
+        ...token,
+        ...user,
+      };
+
+      if (!merged.email) {
+        const userId = Number(merged.id ?? token.sub);
+
+        const retrieved = await prisma.user.findFirst({
+          where: {
+            id: userId,
+          },
+        });
+
+        if (!retrieved) {
+          return token;
+        }
+
+        merged.id = retrieved.id;
+        merged.name = retrieved.name;
+        merged.email = retrieved.email;
+        merged.emailVerified = retrieved.emailVerified;
       }
 
-      const retrievedUser = await prisma.user.findFirst({
-        where: {
-          email: token.email,
-        },
-      });
+      if (
+        merged.id &&
+        (!merged.lastSignedIn ||
+          DateTime.fromISO(merged.lastSignedIn).plus({ hours: 1 }) <= DateTime.now())
+      ) {
+        merged.lastSignedIn = new Date().toISOString();
 
-      if (!retrievedUser) {
-        return {
-          ...token,
-          id: user.id,
-        };
+        await prisma.user.update({
+          where: {
+            id: Number(merged.id),
+          },
+          data: {
+            lastSignedIn: merged.lastSignedIn,
+          },
+        });
       }
 
       return {
-        id: retrievedUser.id,
-        name: retrievedUser.name,
-        email: retrievedUser.email,
+        id: merged.id,
+        name: merged.name,
+        email: merged.email,
+        lastSignedIn: merged.lastSignedIn,
+        emailVerified: merged.emailVerified,
       };
     },
 
@@ -165,6 +193,8 @@ export const NEXT_AUTH_OPTIONS: AuthOptions = {
             id: Number(token.id),
             name: token.name,
             email: token.email,
+            emailVerified:
+              typeof token.emailVerified === 'string' ? new Date(token.emailVerified) : null,
           },
         } satisfies Session;
       }
