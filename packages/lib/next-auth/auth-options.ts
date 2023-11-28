@@ -80,6 +80,18 @@ export const NEXT_AUTH_OPTIONS: AuthOptions = {
           });
         }
 
+        if (!user.emailVerified) {
+          user.emailVerified = new Date();
+          await prisma.user.update({
+            where: {
+              id: user.id,
+            },
+            data: {
+              emailVerified: user.emailVerified,
+            },
+          });
+        }
+
         return {
           id: Number(user.id),
           email: user.email,
