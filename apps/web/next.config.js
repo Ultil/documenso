@@ -80,6 +80,16 @@ const config = {
   async redirects() {
     return [
       {
+        source: '/signin',
+        destination: 'https://app.mabelinsights.com/',
+        permanent: false,
+      },
+      {
+        source: '/settings/password',
+        destination: '/settings/profile',
+        permanent: false,
+      },
+      {
         permanent: true,
         source: '/documents/:id/sign',
         destination: '/sign/:token',

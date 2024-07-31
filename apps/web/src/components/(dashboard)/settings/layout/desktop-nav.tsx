@@ -5,7 +5,7 @@ import type { HTMLAttributes } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import { Braces, CreditCard, Globe2Icon, Lock, User, Users, Webhook } from 'lucide-react';
+import { Braces, CreditCard, Globe2Icon, User, Users, Webhook } from 'lucide-react';
 
 import { useFeatureFlags } from '@documenso/lib/client-only/providers/feature-flag';
 import { cn } from '@documenso/ui/lib/utils';
@@ -64,6 +64,7 @@ export const DesktopNav = ({ className, ...props }: DesktopNavProps) => {
         </Button>
       </Link>
 
+      {/*
       <Link href="/settings/security">
         <Button
           variant="ghost"
@@ -76,6 +77,7 @@ export const DesktopNav = ({ className, ...props }: DesktopNavProps) => {
           Security
         </Button>
       </Link>
+      */}
 
       <Link href="/settings/tokens">
         <Button
