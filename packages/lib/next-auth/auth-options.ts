@@ -34,6 +34,90 @@ export const NEXT_AUTH_OPTIONS: AuthOptions = {
     strategy: 'jwt',
   },
   providers: [
+    {
+      id: 'mabel-server',
+      name: 'Mabel Authentication',
+      type: 'credentials',
+      credentials: {
+        token: { label: 'Token', type: 'text' },
+      },
+      authorize: async (credentials, _req) => {
+        if (!credentials) {
+          throw new Error(ErrorCode.CREDENTIALS_NOT_FOUND);
+        }
+
+        const { token } = credentials;
+
+        const api = await fetch('https://core.mabelinsights.com/users/current', {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+          .then(async (response) => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+            return data as {
+              id: number;
+              email: string;
+              firstName: string;
+              lastName: string;
+              role: string;
+            };
+          })
+
+          .catch((err) => {
+            console.log(err);
+            return null;
+          });
+
+        if (!api) {
+          throw new Error(ErrorCode.CREDENTIALS_NOT_FOUND);
+        }
+
+        let user = await getUserByEmail({ email: api.email }).catch(() => null);
+        if (!user) {
+          const userExists = await prisma.user.findFirst({
+            where: {
+              email: api.email.toLowerCase(),
+            },
+          });
+
+          if (userExists) {
+            throw new Error('User already exists');
+          }
+
+          user = await prisma.user.create({
+            data: {
+              name: `${api.firstName} ${api.lastName}`,
+              email: api.email.toLowerCase(),
+              emailVerified: new Date(),
+              identityProvider: IdentityProvider.DOCUMENSO,
+            },
+          });
+        }
+
+        if (!user.emailVerified) {
+          user.emailVerified = new Date();
+          await prisma.user.update({
+            where: {
+              id: user.id,
+            },
+            data: {
+              emailVerified: user.emailVerified,
+            },
+          });
+        }
+
+        return {
+          id: Number(user.id),
+          email: user.email,
+          name: user.name,
+          emailVerified: user.emailVerified?.toISOString() ?? null,
+        } satisfies User;
+      },
+    },
     CredentialsProvider({
       name: 'Credentials',
       credentials: {

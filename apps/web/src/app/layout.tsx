@@ -8,7 +8,7 @@ import { PublicEnvScript } from 'next-runtime-env';
 import { FeatureFlagProvider } from '@documenso/lib/client-only/providers/feature-flag';
 import { I18nClientProvider } from '@documenso/lib/client-only/providers/i18n.client';
 import { setupI18nSSR } from '@documenso/lib/client-only/providers/i18n.server';
-import { IS_APP_WEB_I18N_ENABLED, NEXT_PUBLIC_WEBAPP_URL } from '@documenso/lib/constants/app';
+import { IS_APP_WEB_I18N_ENABLED } from '@documenso/lib/constants/app';
 import { getServerComponentAllFlags } from '@documenso/lib/server-only/feature-flags/get-server-component-feature-flag';
 import { TrpcProvider } from '@documenso/trpc/react';
 import { cn } from '@documenso/ui/lib/utils';
@@ -26,9 +26,10 @@ const fontCaveat = Caveat({ subsets: ['latin'], variable: '--font-signature' });
 export function generateMetadata() {
   return {
     title: {
-      template: '%s - Documenso',
-      default: 'Documenso',
+      template: '%s - Mabel Documenso',
+      default: 'Mabel Documenso',
     },
+    /* ignore
     description:
       'Join Documenso, the open signing infrastructure, and get a 10x better signing experience. Pricing starts at $30/mo. forever! Sign in now and enjoy a faster, smarter, and more beautiful document signing process. Integrates with your favorite tools, customizable, and expandable. Support our mission and become a part of our open-source community.',
     keywords:
@@ -49,7 +50,7 @@ export function generateMetadata() {
       images: ['/opengraph-image.jpg'],
       description:
         'Join Documenso, the open signing infrastructure, and get a 10x better signing experience. Pricing starts at $30/mo. forever! Sign in now and enjoy a faster, smarter, and more beautiful document signing process. Integrates with your favorite tools, customizable, and expandable. Support our mission and become a part of our open-source community.',
-    },
+    }, */
   };
 }
 

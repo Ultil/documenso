@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import { Trans } from '@lingui/macro';
-import { Braces, CreditCard, Globe2Icon, Lock, User, Users, Webhook } from 'lucide-react';
+import { Braces, CreditCard, Globe2Icon, User, Users, Webhook } from 'lucide-react';
 
 import { useFeatureFlags } from '@documenso/lib/client-only/providers/feature-flag';
 import { cn } from '@documenso/ui/lib/utils';
@@ -65,7 +65,7 @@ export const DesktopNav = ({ className, ...props }: DesktopNavProps) => {
         </Button>
       </Link>
 
-      <Link href="/settings/security">
+      {/*<Link href="/settings/security">
         <Button
           variant="ghost"
           className={cn(
@@ -76,7 +76,7 @@ export const DesktopNav = ({ className, ...props }: DesktopNavProps) => {
           <Lock className="mr-2 h-5 w-5" />
           <Trans>Security</Trans>
         </Button>
-      </Link>
+      </Link>*/}
 
       <Link href="/settings/tokens">
         <Button
