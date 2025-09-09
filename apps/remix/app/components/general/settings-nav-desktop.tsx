@@ -5,7 +5,6 @@ import {
   BracesIcon,
   CreditCardIcon,
   Globe2Icon,
-  Lock,
   Settings2Icon,
   User,
   Users,
@@ -158,7 +157,7 @@ export const SettingsDesktopNav = ({ className, ...props }: SettingsDesktopNavPr
         </Button>
       </Link>
 
-      <Link to="/settings/security">
+      {/*<Link to="/settings/security">
         <Button
           variant="ghost"
           className={cn(
@@ -169,7 +168,7 @@ export const SettingsDesktopNav = ({ className, ...props }: SettingsDesktopNavPr
           <Lock className="mr-2 h-5 w-5" />
           <Trans>Security</Trans>
         </Button>
-      </Link>
+      </Link>*/}
     </div>
   );
 };
