@@ -16,8 +16,8 @@ export const TemplateFooter = ({ isDocument = true }: TemplateFooterProps) => {
         <Text className="my-4 text-base text-slate-400">
           <Trans>
             This document was sent using{' '}
-            <Link className="text-[#7AC455]" href="https://documen.so/mail-footer">
-              Documenso.
+            <Link className="text-[#7AC455]" href="https://sign.mabelinsights.com/">
+              Mabel Documenso.
             </Link>
           </Trans>
         </Text>

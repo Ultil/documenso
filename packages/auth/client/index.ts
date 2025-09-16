@@ -97,6 +97,13 @@ export class AuthClient {
     }
   }
 
+  public mabel = {
+    signIn: async (data: { token: string }) => {
+      const response = await this.client['mabel'].$post({ json: data });
+      await this.handleError(response);
+    },
+  };
+
   public account = {
     getMany: async () => {
       const response = await this.client['accounts'].$get();
