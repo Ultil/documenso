@@ -64,8 +64,6 @@ export default function SignIn({ loaderData }: Route.ComponentProps) {
         title: _(msg`Something went wrong`),
         description: _(msg`We were unable to verify your email at this time.`),
       });
-
-      window.location.href = MABEL_URL;
     }
   };
 
