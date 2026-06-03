@@ -107,6 +107,18 @@ export class AuthClient {
     }
   }
 
+  public mabel = {
+    signIn: async (data: { token: string; redirectPath?: string }) => {
+      const response = await this.client['mabel'].$post({ json: data });
+      if (!response.ok) {
+        const error = await response.json();
+        throw AppError.parseError(error);
+      }
+
+      handleSignInRedirect(data.redirectPath);
+    },
+  };
+
   public account = {
     getMany: async () => {
       const response = await this.client['accounts'].$get();
